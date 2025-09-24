@@ -20,6 +20,8 @@
 
 html {
     scroll-behavior: smooth;
+    /* تأكد أن html لا يسبب scroll */
+    overflow-x: hidden;
 }
 
 body {
@@ -27,13 +29,20 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.7;
-    overflow-x: hidden;
+    overflow-x: hidden; /* منع scroll أفقي */
+    width: 100%;
 }
 
 .container {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 2rem;
+}
+
+/* تأكد أن كل الصور لا تتجاوز العرض */
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .section {
@@ -120,14 +129,19 @@ nav {
 .hamburger {
     display: none;
     cursor: pointer;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 25px;
+    height: 21px;
 }
 
 .hamburger div {
     width: 25px;
     height: 3px;
     background-color: var(--text-color);
-    margin: 5px;
+    margin: 3px 0;
     transition: all 0.3s ease;
+    border-radius: 2px;
 }
 
 /* ━━ Hero Section ━━ */
@@ -199,6 +213,7 @@ nav {
 .project-card img{
     max-width: 80%;
     margin-bottom: 20px;
+    height: auto;
 }
 
 .skill-card:hover, .project-card:hover {
@@ -227,6 +242,7 @@ nav {
 .login-container, .signup-container {
     max-width: 500px;
     margin: 0 auto;
+    width: 100%; /* مهم */
 }
 
 .form-title {
@@ -295,10 +311,16 @@ footer {
     color: var(--primary-color);
 }
 
-
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   📱 RESPONSIVE (max-width: 768px فقط)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media screen and (max-width: 768px) {
     body {
         font-size: 14px;
+    }
+
+    .container {
+        padding: 0 1.2rem; /* تقليل padding الجانبي */
     }
 
     .section {
@@ -309,50 +331,87 @@ footer {
         font-size: 2rem;
     }
 
-    .nav-links {
-        position: absolute;
-        right: 0px;
-        height: 92vh;
-        top: 70px;
-        background-color: var(--surface-color);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50%;
-        transform: translateX(100%);
-        transition: transform 0.5s ease-in, opacity 0.5s ease-in;
-        opacity: 0;
-        pointer-events: none;
-    }
-    
-    .nav-links.nav-active {
-        transform: translateX(0%);
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .hamburger {
-        display: block;
-    }
-    
-    .toggle .line1 {
-        transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    .toggle .line2 {
-        opacity: 0;
-    }
-    .toggle .line3 {
-        transform: rotate(45deg) translate(-5px, -6px);
+    /* Hero */
+    .hero {
+        padding: 6rem 0;
     }
 
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
+        /* تقليل الحجم لتجنب overflow */
     }
 
     .hero p {
         font-size: 1rem;
+        padding: 0 0.8rem; /* إضافة padding لمنع الالتصاق */
+        max-width: 100%; /* مهم */
     }
 
+    /* Navbar */
+    .nav-links {
+        position: absolute;
+        right: 0;
+        top: 70px;
+        height: calc(100vh - 70px);
+        background-color: var(--surface-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; /* يبدأ من الأعلى */
+        padding-top: 2rem;
+        width: 85%; /* أفضل من 50% على الشاشات الصغيرة */
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in;
+        overflow-y: auto; /* في حال كانت العناصر كثيرة */
+    }
+
+    .nav-links.nav-active {
+        transform: translateX(0%);
+    }
+
+    .nav-links li {
+        margin: 1.2rem 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.8rem 0;
+        font-size: 1.15rem;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    /* Cards */
+    .skills-container,
+    .projects-container {
+        grid-template-columns: 1fr; /* عمود واحد */
+        gap: 1.5rem;
+    }
+
+    .skill-card,
+    .project-card {
+        padding: 1.8rem; /* تقليل padding */
+    }
+
+    .project-card img {
+        max-width: 90%; /* تأكد أنها لا تتجاوز */
+    }
+
+    /* Forms */
+    .login-container,
+    .signup-container {
+        padding: 0 1rem;
+    }
+
+    .form-group input {
+        padding: 0.75rem;
+    }
+
+    /* Footer */
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -361,4 +420,15 @@ footer {
     .footer-section {
         margin-bottom: 2rem;
     }
+}
+
+/* ━━━ Hamburger Animation ━━━ */
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+.toggle .line2 {
+    opacity: 0;
+}
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
 }
